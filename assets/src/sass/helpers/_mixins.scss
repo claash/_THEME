@@ -1,0 +1,109 @@
+@mixin flex($direction: row, $content: center, $items: center) {
+    display: flex;
+    align-items: $items;
+    justify-content: $content;
+    flex-direction: $direction;
+}
+
+@mixin grid($template: auto auto, $gap-col: 0, $gap-row: 0) {
+    display: -ms-grid;
+    display: grid;
+    -ms-grid-columns: $template;
+    grid-template-columns: $template;
+    grid-column-gap: $gap-col;
+    grid-row-gap: $gap-row;
+}
+
+// custom media
+$media-types: (xs: '(max-width: ' + $m-xs + ')',
+sm: '(max-width: ' + $m-sm + ')',
+md: '(max-width: ' + $m-md + ')',
+lg: '(max-width: ' + $m-lg + ')',
+ws: '(max-width: ' + $m-ws + ')',
+xl: '(max-width: ' + $m-xl + ')',
+mdpi: '(max-width: ' + $m-mdpi + ')',
+hd: '(max-width: ' + $m-hd + ')',
+rwd: '(max-width: ' + $m-rwd + ')',
+fhd: '(max-width: ' + $m-fhd + ')'
+);
+
+@mixin media($media) {
+    @media #{map-get($media-types, $media)} {
+        @content;
+    }
+}
+
+@mixin placeholder {
+    &::-webkit-input-placeholder {
+        @content;
+    }
+
+    &:-moz-placeholder {
+        @content;
+    }
+
+    &::-moz-placeholder {
+        @content;
+    }
+
+    &:-ms-input-placeholder {
+        @content;
+    }
+}
+
+@mixin imgBg ($next: false, $index: -1, $fit: cover) {
+    position: relative;
+
+    @if $next==false {
+
+        img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            object-fit: $fit;
+            z-index: $index;
+        }
+
+    }
+
+    @else {
+
+        >img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            object-fit: $fit;
+            z-index: $index;
+        }
+
+    }
+}
+
+@mixin addIcon ($icon: '', $where: before, $margin: rem(8), $size: 24) {
+    @include flex(row, flex-start);
+
+    &:#{$where} {
+        content: '';
+        width: rem($size);
+        height: rem($size);
+        flex-shrink: 0;
+        background-image: url($dist + 'img/' + $icon);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+
+        @if $where==before {
+            margin-right: $margin;
+        }
+
+        @else {
+            margin-left: $margin;
+        }
+
+
+    }
+}

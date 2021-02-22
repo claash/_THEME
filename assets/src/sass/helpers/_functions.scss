@@ -1,0 +1,11 @@
+@function scut-strip-unit ($num) {
+    @return $num / ($num * 0 + 1);
+}
+
+@function rem ($pixels) {
+    @return scut-strip-unit($pixels) / $s-default * 1rem;
+}
+
+@function col($col) {
+    @return (100% / 12) * $col;
+}
