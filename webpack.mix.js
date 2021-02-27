@@ -1,4 +1,10 @@
 let mix = require('laravel-mix');
+const del = require('del');
+
+const assets = {
+	dist: 'assets/dist',
+	src: 'assets/src'
+};
 
 if (!mix.inProduction()) {
 	mix.webpackConfig({
@@ -9,16 +15,22 @@ if (!mix.inProduction()) {
 /**
  * Assets
  */
+del(assets.dist);
+
 mix
-	.js('assets/src/js/app.js', 'js')
-	.sass('assets/src/sass/app.scss', 'css')
+	.js(assets.src + '/js/app.js', 'js')
+	.autoload({
+		jquery: [ '$', 'window.jQuery' ],
+	})
+	.sass(assets.src + '/sass/app.scss', 'css')
 	.options({
 		processCssUrls: false,
-		autoprefixer: 'last 2 version'
+		autoprefixer: 'last 2 version',
 	})
 	.sourceMaps()
-	.copy('assets/src/images', 'assets/dist/images')
-	.setPublicPath('assets/dist');
+	.copy(assets.src + '/images', 'assets/dist/images')
+	.copy(assets.src + '/fonts', 'assets/dist/fonts')
+	.setPublicPath(assets.dist);
 
 /**
  * BrowserSync
